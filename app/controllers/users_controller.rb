@@ -10,6 +10,10 @@ class UsersController < ApplicationController
       render json: {error: "Invalid username or password"}, status: :unproce
     end
   end
+  private
 
+  def user_params
+    params.require(:user).permit(:username, :password)
+  end
 
 end
