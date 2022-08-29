@@ -4,7 +4,7 @@ class CarsController < ApplicationController
 
   # GET /cars
   def index
-    @cars = Car.all
+    @cars = @user.cars.all
 
     render json: @cars
   end
@@ -16,7 +16,7 @@ class CarsController < ApplicationController
 
   # POST /cars
   def create
-    @car = Car.new(car_params)
+    @car = Car.new(car_params.merge(user: @user))
 
     if @car.save
       render json: @car, status: :created, location: @car
@@ -42,11 +42,11 @@ class CarsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_car
-      @car = Car.find(params[:id])
+      @car = @user.cars.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def car_params
-      params.require(:car).permit(:CarName, :user_id)
+      params.require(:car).permit(:CarName)
     end
 end
